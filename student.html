@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Gate Pass Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --success: #10b981;
+            --bg: #f8fafc;
+            --text-main: #1e293b;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            background-image: radial-gradient(#cbd5e1 0.5px, transparent 0.5px);
+            background-size: 24px 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: var(--text-main);
+        }
+
+        /* Modern Card Styling */
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            width: 100%;
+            max-width: 420px;
+            transition: all 0.3s ease;
+        }
+
+        .header h2 { margin: 0; font-weight: 700; color: #0f172a; letter-spacing: -0.025em; }
+        .header p { color: #64748b; font-size: 0.9rem; margin-top: 5px; margin-bottom: 30px; }
+
+        label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 8px; color: #475569; }
+        
+        input, textarea {
+            width: 100%; padding: 12px; border: 1.5px solid #e2e8f0; border-radius: 10px;
+            font-family: inherit; font-size: 0.95rem; margin-bottom: 20px; box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+
+        input:focus, textarea:focus { outline: none; border-color: var(--primary); ring: 3px rgba(37, 99, 235, 0.1); }
+
+        .submit-btn {
+            width: 100%; padding: 14px; background: var(--primary); color: white;
+            border: none; border-radius: 10px; font-weight: 600; font-size: 1rem;
+            cursor: pointer; transition: transform 0.2s, background 0.2s;
+        }
+
+        .submit-btn:hover { background: var(--primary-hover); transform: translateY(-1px); }
+
+        /* --- Success Section (Horizontal Layout) --- */
+        #successOverlay {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .success-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        /* Checkmark Styling */
+        .checkmark {
+            width: 50px; height: 50px; border-radius: 50%; display: block;
+            stroke-width: 3; stroke: #fff; stroke-miterlimit: 10;
+            box-shadow: inset 0px 0px 0px var(--success);
+            animation: fill .4s ease-in-out .4s forwards;
+        }
+        .checkmark__circle { stroke-dasharray: 166; stroke-dashoffset: 166; stroke-width: 3; stroke: var(--success); fill: none; animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards; }
+        .checkmark__check { transform-origin: 50% 50%; stroke-dasharray: 48; stroke-dashoffset: 48; animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards; }
+
+        .success-msg-text {
+            font-size: 1.2rem; font-weight: 700; color: var(--success);
+            opacity: 0; animation: fadeInText 0.5s ease 0.9s forwards;
+        }
+
+        .instruction-text { color: #64748b; font-size: 0.95rem; text-align: center; margin-bottom: 25px; line-height: 1.5; }
+
+        @keyframes stroke { 100% { stroke-dashoffset: 0; } }
+        @keyframes fill { 100% { box-shadow: inset 0px 0px 0px 30px var(--success); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeInText { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
+
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <div id="formContent">
+        <div class="header">
+            <h2>Gate Pass Request</h2>
+            <p>Smart IoT Attendance System</p>
+        </div>
+        <form id="gatePassForm">
+            <label>Registration Number</label>
+            <input type="text" id="sid" placeholder="e.g. 24L31A4370" required>
+            
+            <label>Reason for Leave</label>
+            <textarea id="reason" placeholder="Please provide a valid reason..." required></textarea>
+            
+            <button type="submit" class="submit-btn">Send to Faculty</button>
+        </form>
+    </div>
+
+    <div id="successOverlay">
+        <div class="success-row">
+            <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+                <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+            </svg>
+            <div class="success-msg-text">Submitted!</div>
+        </div>
+        <p class="instruction-text">
+            Your request is now pending faculty approval.<br> 
+            <strong>Please proceed to the gate and scan your RFID card.</strong>
+        </p>
+        <button onclick="location.reload()" style="background: #f1f5f9; color: #475569; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600;">Done</button>
+    </div>
+</div>
+
+<script>
+    document.getElementById('gatePassForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        // Hide form, show success
+        document.getElementById('formContent').style.display = 'none';
+        document.getElementById('successOverlay').style.display = 'flex';
+        
+        // Data logic would go here (e.g., Firebase push)
+    });
+</script>
+
+</body>
+</html>
